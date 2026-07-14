@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 import setuptools
-import sg_tools
+import sg_toolkit
 
 
-base_url = "https://github.com/ZongXR/sg-tools"
+base_url = "https://github.com/ZongXR/sg-toolkit"
 with open("./README.md", "r", encoding="utf-8") as f:
     long_description = f.read()
 packages = list(filter(lambda x: not x.startswith("test"), setuptools.find_packages()))
@@ -12,8 +12,8 @@ requires_list = [x.strip() for x in requires_list if (not x.startswith("setuptoo
 
 
 setuptools.setup(
-    name="SG-Tools",
-    version=sg_tools.__version__,
+    name="SG-Toolkit",
+    version=sg_toolkit.__version__,
     author="Xiangrui Zong",
     author_email="zxr@tju.edu.cn",
     description="Some automatic scripts to against formalism",
