@@ -46,3 +46,18 @@ browser.process()
 <li>Python</li>
 <li>Python第三方库（见<a href="requirements.txt" target="_blank">requirements.txt</a>）</li>
 </ul>
+<h2>更新日志</h2>
+<table>
+<tr>
+<th>版本号</th><th>更新内容</th><th>更新日期</th>
+</tr>
+<tr>
+<td>0.1.0</td><td>初始化项目</td><td>2026年7月13日</td>
+</tr>
+<tr>
+<td>0.2.0</td><td>项目更名为SG-Toolkit</td><td>2026年7月14日</td>
+</tr>
+<tr>
+<td>0.2.1</td><td>修复安全知识答题截止到99题的BUG</td><td>2026年7月14日</td>
+</tr>
+</table>

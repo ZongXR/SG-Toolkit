@@ -91,7 +91,7 @@ class FuckAnGui:
         return [x.split("-", 1)[-1] for x in final_result]
 
     def exam(self):
-        while int(re.findall(r"\d+", self.__get_bg_size__())[0]) < 100:
+        while int(re.findall(r"\d+", self.__get_bg_size__())[0]) <= 100:
             print(self.__get_bg_size__())
             answer = self.search_answer()
             if self.__get_bg_title__() in ("单选题", "多选题"):
