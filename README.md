@@ -9,7 +9,7 @@ browser = FuckGWXT(
     "美国能源",
     "http://localhost/www/command/CollegeControl?flag=collegeTC&tcID=ef8afbf81de&tab=collTcLesson&type=&worktypeid=&pageNo1=15&pageSize1=10&comewho=null"
 )
-browser.process()
+browser.run()
 </pre>
 <h3>安全知识答题</h3>
 <h4>代码示例</h4>
@@ -20,7 +20,7 @@ browser = FuckAnGui(
     "http://localhost/comlogin/routeLogin.html",
     "./题库.xlsx"
 )
-browser.process()
+browser.run()
 </pre>
 <h4>题库格式</h4>
 <table>
@@ -74,5 +74,8 @@ browser.process()
 </tr>
 <tr>
 <td>0.2.4</td><td>Refactor sg_toolkit.gkpt: remove unused re import, add tqdm, replace fragile while/regex loop with a deterministic tqdm(range(100)) loop, make exam() return the page body text and have process() return that result. Update sg_toolkit.gwxt: add module docstring/encoding and make process() return the result of learn().</td><td>2026年7月14日</td>
+</tr>
+<tr>
+<td>0.3.0</td><td>添加注释; 安全知识自动答题工具新增题目数量参数; 启动方法改为<code>browser.run()</code></td><td>2026年7月14日</td>
 </tr>
 </table>

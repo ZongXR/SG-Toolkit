@@ -38,9 +38,17 @@ class FuckGWXT:
         self.driver.maximize_window()
 
     def teardown_method(self):
+        """
+        关闭浏览器\n
+        :return:
+        """
         self.driver.quit()
 
     def login(self):
+        """
+        登录\n
+        :return:
+        """
         self.driver.get(self.url)
         time.sleep(3)
         element = self.driver.find_element(By.ID, "department")
@@ -59,6 +67,11 @@ class FuckGWXT:
         self.driver.find_element(By.ID, "submit_login").click()
 
     def wait_for_window(self, timeout=2):
+        """
+        等待新窗口\n
+        :param timeout: 超时时间（毫秒）
+        :return: 新的窗口
+        """
         time.sleep(round(timeout / 1000))
         wh_now = self.driver.window_handles
         wh_then = self.vars["window_handles"]
@@ -128,9 +141,17 @@ class FuckGWXT:
         return result
 
     def refresh(self):
+        """
+        浏览器刷新\n
+        :return:
+        """
         return self.driver.refresh()
 
-    def process(self):
+    def run(self):
+        """
+        登录，学习课程，刷新浏览器\n
+        :return: 学习了几个课程
+        """
         self.login()
         result = self.learn()
         self.refresh()

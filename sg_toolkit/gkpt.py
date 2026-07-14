@@ -13,13 +13,14 @@ from tqdm import tqdm
 
 
 class FuckAnGui:
-    def __init__(self, username: str, password: str, url: str, answers_path: str):
+    def __init__(self, username: str, password: str, url: str, answers_path: str, question_num: int = 100):
         """
         初始化\n
         :param username: 用户名
         :param password: 密码：Fk+身份证后六位+,
         :param url: 登陆网址
         :param answers_path: 题库文件路径
+        :param question_num: 问题数量，可用于控制正确率
         """
         self.username = username
         self.password = password
@@ -34,18 +35,38 @@ class FuckAnGui:
         self.answers = pd.read_excel(answers_path)
         self.answers["题干"] = self.answers["题干"].apply(lambda x: x.replace(" ", "").replace("\n", "").replace("()", "").replace("（）", ""))
         self.answers["选项"] = self.answers["选项"].apply(lambda x: x.replace("||", "|"))
+        self.question_num = question_num
 
     def __find_elements_displayed__(self, xpath: str) -> List[WebElement]:
+        """
+        使用XPATH找非隐藏元素\n
+        :param xpath: xpath路径
+        :return: 非隐藏元素
+        """
         result = self.driver.find_elements_by_xpath(xpath)
         return [x for x in result if x.is_displayed()]
 
     def __find_element_displayed__(self, xpath: str, index: int = -1) -> WebElement:
+        """
+        使用XPATH找非隐藏元素\n
+        :param xpath: xpath路径
+        :param index: 找第几个，默认-1
+        :return: 非隐藏元素
+        """
         return self.__find_elements_displayed__(xpath)[index]
 
     def teardown_method(self):
+        """
+        关闭浏览器\n
+        :return:
+        """
         self.driver.quit()
 
     def login(self):
+        """
+        登陆系统\n
+        :return:
+        """
         self.driver.get(self.url)
         wh_past = self.driver.window_handles
         self.driver.find_element_by_xpath("//div[text()='安全知识考试']").click()
@@ -58,14 +79,26 @@ class FuckAnGui:
             exit()
 
     def enter(self):
+        """
+        进入考试界面\n
+        :return:
+        """
         self.driver.find_element_by_css_selector("div#tyks.intoType.ini_tk").click()
         self.driver.find_element_by_css_selector("div.examitem").click()
         self.driver.find_element_by_css_selector("button.swal2-confirm.swal2-styled").click()
 
     def __get_bg_title__(self):
+        """
+        获取题型\n
+        :return: 题型
+        """
         return self.driver.find_element_by_css_selector("div.bg_title").text
 
     def __get_question_title__(self):
+        """
+        获取题干\n
+        :return: 题干
+        """
         if self.__get_bg_title__() in ("单选题", "多选题"):
             result = self.driver.find_element_by_css_selector("div.question_choose_title").text
         else:
@@ -74,12 +107,24 @@ class FuckAnGui:
         return result
 
     def __get_options_item__(self):
+        """
+        获取选项\n
+        :return: 选项
+        """
         return self.driver.find_elements_by_css_selector("div.question_choose_options_item_txt")
 
     def __get_bg_size__(self):
+        """
+        获取第几题\n
+        :return: 第几题
+        """
         return self.driver.find_element_by_css_selector("div.bg_size").text
 
     def search_answer(self):
+        """
+        寻找答案\n
+        :return: 答案对应的文字内容，不包括ABCD字母
+        """
         result = self.answers[(self.answers["题型"] == self.__get_bg_title__()) & (self.answers["题干"] == self.__get_question_title__())]
         final_result = []
         if result.shape[0] > 0:
@@ -91,7 +136,11 @@ class FuckAnGui:
         return [x.split("-", 1)[-1] for x in final_result]
 
     def exam(self):
-        for _ in tqdm(range(100)):
+        """
+        进行一场考试\n
+        :return: 得分页面文字内容
+        """
+        for _ in tqdm(range(self.question_num)):
             answer = self.search_answer()
             if self.__get_bg_title__() in ("单选题", "多选题"):
                 for ans in list(answer):
@@ -113,7 +162,11 @@ class FuckAnGui:
         time.sleep(2)
         return self.driver.find_element_by_tag_name("body").text
 
-    def process(self):
+    def run(self):
+        """
+        登录，进入考试页面，进行一场考试\n
+        :return: 得分页面文字内容
+        """
         self.login()
         self.enter()
         return self.exam()
