@@ -63,4 +63,7 @@ browser.process()
 <tr>
 <td>0.2.2</td><td>安全知识自动答题完成后显示成绩</td><td>2026年7月14日</td>
 </tr>
+<tr>
+<td>0.2.3</td><td>In sg_toolkit.gkpt.FuckAnGui change Chrome user-data-dir to use current working directory (os.getcwd()) for per-user cache. Replace fragile regex-based bg-size check in exam() with a deterministic counter loop (i from 0 to 99) and increment it each iteration to avoid potential infinite loops while keeping existing submit behavior.</td><td>2026年7月14日</td>
+</tr>
 </table>

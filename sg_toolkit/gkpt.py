@@ -24,7 +24,7 @@ class FuckAnGui:
         self.username = username
         self.password = password
         self.url = url
-        cache_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), self.username)
+        cache_path = os.path.join(os.path.abspath(os.getcwd()), self.username)
         os.makedirs(cache_path, exist_ok=True)
         options = Options()
         options.add_argument(f"--user-data-dir={cache_path}")
@@ -91,7 +91,8 @@ class FuckAnGui:
         return [x.split("-", 1)[-1] for x in final_result]
 
     def exam(self):
-        while int(re.findall(r"\d+", self.__get_bg_size__())[0]) <= 100:
+        i = 0
+        while i < 100:
             print(self.__get_bg_size__())
             answer = self.search_answer()
             if self.__get_bg_title__() in ("单选题", "多选题"):
@@ -109,6 +110,7 @@ class FuckAnGui:
                 pass
             self.driver.find_element_by_css_selector("div.bg_btn.bg_next").click()
             time.sleep(2)
+            i = i + 1
         self.driver.find_element_by_css_selector("img.submit-paper-btn").click()
         self.driver.find_element_by_css_selector("button.swal2-confirm.swal2-styled").click()
         time.sleep(2)
