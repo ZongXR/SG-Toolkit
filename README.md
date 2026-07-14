@@ -60,4 +60,7 @@ browser.process()
 <tr>
 <td>0.2.1</td><td>修复安全知识答题截止到99题的BUG</td><td>2026年7月14日</td>
 </tr>
+<tr>
+<td>0.2.2</td><td>安全知识自动答题完成后显示成绩</td><td>2026年7月14日</td>
+</tr>
 </table>

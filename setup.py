@@ -3,7 +3,7 @@ import setuptools
 import sg_toolkit
 
 
-base_url = "https://github.com/ZongXR/sg-toolkit"
+base_url = "https://github.com/ZongXR/SG-Toolkit"
 with open("./README.md", "r", encoding="utf-8") as f:
     long_description = f.read()
 packages = list(filter(lambda x: not x.startswith("test"), setuptools.find_packages()))

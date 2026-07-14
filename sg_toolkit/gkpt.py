@@ -111,7 +111,8 @@ class FuckAnGui:
             time.sleep(2)
         self.driver.find_element_by_css_selector("img.submit-paper-btn").click()
         self.driver.find_element_by_css_selector("button.swal2-confirm.swal2-styled").click()
-        time.sleep(5)
+        time.sleep(2)
+        print(self.driver.find_element_by_tag_name("body").text)
 
     def process(self):
         self.login()
