@@ -2,7 +2,6 @@
 """
 安全考试自动答题
 """
-import re
 import os
 import time
 from typing import List
@@ -10,6 +9,7 @@ from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.remote.webelement import WebElement
 import pandas as pd
+from tqdm import tqdm
 
 
 class FuckAnGui:
@@ -91,9 +91,7 @@ class FuckAnGui:
         return [x.split("-", 1)[-1] for x in final_result]
 
     def exam(self):
-        i = 0
-        while i < 100:
-            print(self.__get_bg_size__())
+        for _ in tqdm(range(100)):
             answer = self.search_answer()
             if self.__get_bg_title__() in ("单选题", "多选题"):
                 for ans in list(answer):
@@ -110,13 +108,12 @@ class FuckAnGui:
                 pass
             self.driver.find_element_by_css_selector("div.bg_btn.bg_next").click()
             time.sleep(2)
-            i = i + 1
         self.driver.find_element_by_css_selector("img.submit-paper-btn").click()
         self.driver.find_element_by_css_selector("button.swal2-confirm.swal2-styled").click()
         time.sleep(2)
-        print(self.driver.find_element_by_tag_name("body").text)
+        return self.driver.find_element_by_tag_name("body").text
 
     def process(self):
         self.login()
         self.enter()
-        self.exam()
+        return self.exam()

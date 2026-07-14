@@ -37,6 +37,12 @@ browser.process()
 <td>判断题</td><td>今天的早点有豆浆</td><td>A-正确|B-错误</td><td>A</td>
 </tr>
 </table>
+<ol>
+<li>表格必须包含<b>题型</b>、<b>题干</b>、<b>选项</b>、<b>答案</b>四列</li>
+<li><b>题型</b>只能包含<b>单选题</b>、<b>多选题</b>、<b>判断题</b></li>
+<li>每个<b>选项</b>使用单竖线<b>|</b>分隔，并且按照<b>A-选项</b>类似格式书写。<b>判断题</b>选项内容固定为<b>A-正确|B-错误</b></li>
+<li><b>答案</b>列有且仅有大写字母</li>
+</ol>
 <h4>注意事项</h4>
 <p>第一次运行程序必定失败，在弹出的窗口输入用户名、密码、验证码，点击登录，浏览器将自动保存登录信息。下次运行即可自动答题。</p>
 <h2>环境要求</h2>
@@ -65,5 +71,8 @@ browser.process()
 </tr>
 <tr>
 <td>0.2.3</td><td>In sg_toolkit.gkpt.FuckAnGui change Chrome user-data-dir to use current working directory (os.getcwd()) for per-user cache. Replace fragile regex-based bg-size check in exam() with a deterministic counter loop (i from 0 to 99) and increment it each iteration to avoid potential infinite loops while keeping existing submit behavior.</td><td>2026年7月14日</td>
+</tr>
+<tr>
+<td>0.2.4</td><td>Refactor sg_toolkit.gkpt: remove unused re import, add tqdm, replace fragile while/regex loop with a deterministic tqdm(range(100)) loop, make exam() return the page body text and have process() return that result. Update sg_toolkit.gwxt: add module docstring/encoding and make process() return the result of learn().</td><td>2026年7月14日</td>
 </tr>
 </table>
