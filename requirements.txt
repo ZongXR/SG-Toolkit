@@ -1,6 +1,6 @@
-pandas~=2.0.3
-selenium~=3.14.1
-tqdm~=4.65.0
+pandas
+selenium
+tqdm
 setuptools
 twine
 packaging

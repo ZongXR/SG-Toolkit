@@ -2,9 +2,11 @@
 """
 安全考试自动答题
 """
+import re
 import os
 import time
 from typing import List
+import logging
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.remote.webelement import WebElement
@@ -32,9 +34,11 @@ class FuckAnGui:
         self.driver = Chrome(options=options)
         self.driver.implicitly_wait(30)
         self.vars = {}
-        self.answers = pd.read_excel(answers_path)
-        self.answers["题干"] = self.answers["题干"].apply(lambda x: x.replace(" ", "").replace("\n", "").replace("()", "").replace("（）", ""))
-        self.answers["选项"] = self.answers["选项"].apply(lambda x: x.replace("||", "|"))
+        self.answers = pd.read_excel(answers_path, dtype=str)
+        self.answers["题型"] = self.answers["题型"].apply(lambda x: re.sub(r"\s+", "", x))
+        self.answers["题干"] = self.answers["题干"].apply(lambda x: re.sub(r"\s+", "", x).replace("()", "").replace("（）", ""))
+        self.answers["选项"] = self.answers["选项"].apply(lambda x: re.sub(r"\s+", "", x).replace("||", "|"))
+        self.answers["答案"] = self.answers["答案"].apply(lambda x: re.sub(r"\s+", "", x))
         self.question_num = question_num
 
     def __find_elements_displayed__(self, xpath: str) -> List[WebElement]:
@@ -92,7 +96,7 @@ class FuckAnGui:
         获取题型\n
         :return: 题型
         """
-        return self.driver.find_element_by_css_selector("div.bg_title").text
+        return re.sub(r"\s+", "", self.driver.find_element_by_css_selector("div.bg_title").text)
 
     def __get_question_title__(self):
         """
@@ -103,7 +107,7 @@ class FuckAnGui:
             result = self.driver.find_element_by_css_selector("div.question_choose_title").text
         else:
             result = self.driver.find_element_by_css_selector("div.question_judge_title").text
-        result = result.replace("(保命题)", "").replace(" ", "").replace("()", "").replace("（）", "")
+        result = re.sub(r"\s+", "", result).replace("(保命题)", "").replace("()", "").replace("（）", "")
         return result
 
     def __get_options_item__(self):
@@ -118,7 +122,7 @@ class FuckAnGui:
         获取第几题\n
         :return: 第几题
         """
-        return self.driver.find_element_by_css_selector("div.bg_size").text
+        return self.driver.find_element_by_css_selector("div.bg_size").text.strip()
 
     def search_answer(self):
         """
@@ -132,7 +136,7 @@ class FuckAnGui:
                 if res[0] in list(result["答案"].iloc[0]):
                     final_result.append(res)
         else:
-            print("??", self.__get_question_title__())
+            logging.info(f"未找到答案: {self.__get_question_title__()}")
         return [x.split("-", 1)[-1] for x in final_result]
 
     def exam(self):
@@ -145,16 +149,18 @@ class FuckAnGui:
             if self.__get_bg_title__() in ("单选题", "多选题"):
                 for ans in list(answer):
                     for option_item in self.__get_options_item__():
-                        if option_item.text.split("-", 1)[-1] == ans:
+                        if re.sub(r"\s+", "", option_item.text.split("-", 1)[-1]) == ans:
                             option_item.click()
             elif self.__get_bg_title__() == "判断题":
                 if len(answer) > 0:
                     if "正确" == answer[0]:
                         self.driver.find_element_by_css_selector("img.question_judge_options_item.judge_true").click()
-                    else:
+                    elif "错误" == answer[0]:
                         self.driver.find_element_by_css_selector("img.question_judge_options_item.judge_false").click()
+                    else:
+                        raise ValueError(f"判断题选项只能是 A-正确|B-错误 : {self.__get_question_title__()}")
             else:
-                pass
+                raise ValueError(f"不支持的题型: {self.__get_bg_title__()}")
             self.driver.find_element_by_css_selector("div.bg_btn.bg_next").click()
             time.sleep(2)
         self.driver.find_element_by_css_selector("img.submit-paper-btn").click()
