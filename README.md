@@ -81,4 +81,7 @@ browser.run()
 <tr>
 <td>0.3.1</td><td>Unpin requirements (requirements.txt), bump package version to 0.3.1 (sg_toolkit/__init__.py). Improve gkpt.py robustness by reading Excel as strings, normalizing whitespace in题型/题干/选项/答案, stripping UI text, replacing prints with logging, trimming option text before matching, and adding explicit ValueError cases for unsupported question types and invalid judge answers. These changes reduce brittle string-matching and improve error visibility.</td><td>2026年7月15日</td>
 </tr>
+<tr>
+<td>0.3.2</td><td>填充题库缺失值为空字符串</td><td>2026年7月21日</td>
+</tr>
 </table>

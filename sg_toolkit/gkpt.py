@@ -35,6 +35,7 @@ class FuckAnGui:
         self.driver.implicitly_wait(30)
         self.vars = {}
         self.answers = pd.read_excel(answers_path, dtype=str)
+        self.answers = self.answers.fillna("")
         self.answers["题型"] = self.answers["题型"].apply(lambda x: re.sub(r"\s+", "", x))
         self.answers["题干"] = self.answers["题干"].apply(lambda x: re.sub(r"\s+", "", x).replace("()", "").replace("（）", ""))
         self.answers["选项"] = self.answers["选项"].apply(lambda x: re.sub(r"\s+", "", x).replace("||", "|"))
