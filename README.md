@@ -1,22 +1,55 @@
 <h1>SG-Toolkit</h1>
 <p>使用科技手段对抗形式主义，提供了一些自动化脚本。能够帮助你完成网上学堂刷课、安全知识考试自动答题，等</p>
 <h2>怎么用？</h2>
+<h3>安装</h3>
+<ol>
+<li><code>pip install SG-Toolkit</code></li>
+<li>把与浏览器同版本的<code>chromedriver.exe</code>放置在启动脚本同级目录下</li>
+</ol>
 <h3>网上学堂刷课</h3>
 <pre>
+from sg_toolkit.gwxt import FuckGWXT
 browser = FuckGWXT(
-    "san.zhang",
-    "1q2w!Q@W",
-    "美国能源",
+    "账号",
+    "密码",
+    "单位名称",
     "http://localhost/www/command/CollegeControl?flag=collegeTC&tcID=ef8afbf81de&tab=collTcLesson&type=&worktypeid=&pageNo1=15&pageSize1=10&comewho=null"
 )
 browser.run()
 </pre>
-<h3>安全知识答题</h3>
+<h3>外网安全知识答题</h3>
+<pre>
+from sg_toolkit.yh import FuckAnGui
+browser = FuckAnGui(
+    "身份证号", 
+    "密码", 
+    "https://localhost:29703/COMEXAMPLATFORM/login/tologin.do", 
+    "./题库.xlsx"
+)
+browser.run()
+</pre>
+<h4>题库格式</h4>
+<table>
+<tr>
+<th>题干</th><th>答案</th><th>选项A</th><th>选项B</th><th>选项C</th><th>选项D</th>
+</tr>
+<tr>
+<td>你今天吃的什么早点？</td><td>A</td><td>豆浆</td><td>八宝粥</td><td>胡辣汤</td><td>肉夹馍</td>
+</tr>
+<tr>
+<td>都有什么早点？</td><td>BCD</td><td>豆浆</td><td>八宝粥</td><td>胡辣汤</td><td>肉夹馍</td>
+</tr>
+<tr>
+<td>今天的早点有豆浆</td><td>正确</td><td></td><td></td><td></td><td></td>
+</tr>
+</table>
+<h3>内网安全知识答题</h3>
 <h4>代码示例</h4>
 <pre>
+from sg_toolkit.gkpt import FuckAnGui
 browser = FuckAnGui(
-    "san.zhang",
-    "1qaz@WSX",
+    "账号",
+    "密码",
     "http://localhost/comlogin/routeLogin.html",
     "./题库.xlsx"
 )
@@ -83,5 +116,8 @@ browser.run()
 </tr>
 <tr>
 <td>0.3.2</td><td>填充题库缺失值为空字符串</td><td>2026年7月21日</td>
+</tr>
+<tr>
+<td>0.4.0</td><td>新增外网安全答题脚本, 修复一些BUG</td><td>2026年11月19日</td>
 </tr>
 </table>

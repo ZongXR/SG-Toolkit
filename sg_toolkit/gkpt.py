@@ -81,6 +81,7 @@ class FuckAnGui:
         except KeyError as e:
             self.driver.find_element_by_xpath("//div[@class='login-form']/form/div[1]//input").send_keys(self.username)
             self.driver.find_element_by_xpath("//div[@class='login-form']/form/div[2]//input").send_keys(self.password)
+            logging.info("请手动登录系统以保存登录信息，然后请再次运行脚本")
             exit()
 
     def enter(self):
@@ -145,6 +146,7 @@ class FuckAnGui:
         进行一场考试\n
         :return: 得分页面文字内容
         """
+        time.sleep(2)
         for _ in tqdm(range(self.question_num)):
             answer = self.search_answer()
             if self.__get_bg_title__() in ("单选题", "多选题"):
